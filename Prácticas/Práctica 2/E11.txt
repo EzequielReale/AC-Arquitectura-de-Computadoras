@@ -1,0 +1,50 @@
+N_CLK EQU 10
+TIMER EQU 10H
+PIC   EQU 20H
+EOI   EQU 20H
+IMR   EQU 21H
+INT0  EQU 24H
+INT1  EQU 25H
+INT2  EQU 26H
+INT3  EQU 27H
+PA    EQU 30H
+PB    EQU 31H
+CA    EQU 32H
+CB    EQU 33H
+
+ORG 1000H
+MAY DW 41H
+
+ORG 3000H
+LETRA: MOV AL, 1 ; Se imprime en pantalla 1 caracter
+MOV BX, OFFSET MAY ; a partir de la direccion de MAY
+CMP MAY, 5BH ; comparo con el caracter siguiente al "Z", que es el ultimo valido
+JZ NO_ES ; Si aun no procesamos "Z", continua con el siguiente caracter
+INT 7 ; Imprimo
+INC MAY ; Paso al siguiente caracter
+JMP FIN ; No hay que hacer nada más
+NO_ES: MOV MAY, 41H ; Si no es reinicio en A
+JMP LETRA ; Y repito el abecedario
+FIN: MOV AL, EOI ; Copio 20H a AL
+OUT EOI, AL ; Le aviso a EOI que terminé
+IRET
+
+ORG 2000H
+MOV AX, LETRA ; Pongo en AX la dirección de letra
+MOV BX, 20 ; Elijo la id 5 para mi subrutina 5*4=20
+MOV [BX], AX ; Pongo la direccion de mi subrutina en la id
+
+CLI ;Arranco a configurar el PIO
+
+MOV AL, 11111110B ; 
+OUT IMR, AL ; Dejo activada solo la interrupción F10
+
+MOV AL, 5
+OUT INT0, AL ;Le paso mi id a INT0 (interrupción F10)
+
+STI ; Termino de configurar el PIO
+
+LOOP: JMP LOOP ; Zona de boludeo
+
+INT 0
+END

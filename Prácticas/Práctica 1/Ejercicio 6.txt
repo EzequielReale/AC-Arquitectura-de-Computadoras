@@ -1,0 +1,71 @@
+a.
+org 1000h
+a dw 4
+b dw 6
+res dw ?
+
+org 2000h
+mov ax, 0
+cmp a, 0
+jz fin
+cmp b, 0
+jz fin
+mul: add ax, a 
+dec b
+jnz mul
+fin: mov res,ax
+hlt
+end
+
+b.
+org 1000h
+a dw 4
+b dw 0
+res dw ?
+
+org 3000h
+mul:cmp cx, 0
+jz fin
+cmp bx, 0
+jz fin
+add ax, cx 
+dec bx
+jnz mul
+fin:ret
+
+org 2000h
+mov ax, 0
+mov bx, b
+mov cx, a
+call mul
+mov res,ax
+hlt
+end
+
+c.
+ORG 3000H
+MUL: MOV DX, 0
+MOV BX, AX
+MOV AX, [BX]
+MOV BX, CX
+MOV CX, [BX]
+CMP CL, 0
+JZ FIN
+LAZO: ADD DX, AX
+DEC CX
+JNZ LAZO
+FIN: RET
+
+ORG 1000H
+NUM1 DW 5H
+NUM2 DW 3H
+RES DW ?
+
+ORG 2000H
+MOV AX, OFFSET NUM1
+MOV CX, OFFSET NUM2
+CALL MUL
+MOV RES, DX
+HLT
+END
+
