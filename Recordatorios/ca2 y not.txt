@@ -1,0 +1,8 @@
+CA2:        daddi $t0, $0, 0xffffffffffffffff
+            xor $v0, $a0, $t0
+            daddi $v0, $v0, 1
+            jr $ra
+
+NOT:        daddi $t0, $0, 0xffffffffffffffff
+            xor $v0, $a0, $t0
+            jr $ra

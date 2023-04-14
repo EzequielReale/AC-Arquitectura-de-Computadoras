@@ -1,0 +1,3 @@
+RAW--> quiere leer un dato que aún no está disponible.
+WAR--> quiere escribir un dato que está siendo leído en otra instrucción anterior.
+WAW--> quiere escribir sobre un dato que aún no ha sido escrito en una instrucción anterior.
